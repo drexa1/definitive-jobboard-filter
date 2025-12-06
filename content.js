@@ -24,7 +24,7 @@ function hideJobs(blacklist) {
 // Observe DOM changes (for dynamically loaded cards)
 const observer = new MutationObserver(() => {
     chrome.storage.sync.get(null, (items) => {
-        const blacklist = Object.values(items).map(i => i.word);
+        const blacklist = Object.values(items).map(i => i.company); // ✅ use i.company
         hideJobs(blacklist);
     });
 });
@@ -33,6 +33,6 @@ observer.observe(document.body, { childList: true, subtree: true });
 
 // Initial run
 chrome.storage.sync.get(null, (items) => {
-    const blacklist = Object.values(items).map(i => i.word);
+    const blacklist = Object.values(items).map(i => i.company); // ✅ use i.company
     hideJobs(blacklist);
 });
