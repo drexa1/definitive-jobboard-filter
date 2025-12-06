@@ -1,7 +1,9 @@
+// content.js
+
 let numHiddenJobs = 0;
 let blacklist = [];
 
-// Function to fetch current blacklist from storage
+// Fetch blacklist from storage
 async function fetchBlacklist() {
     const data = await chrome.storage.sync.get(null);
     blacklist = Object.values(data)
@@ -9,46 +11,47 @@ async function fetchBlacklist() {
         .map(item => item.company.toLowerCase());
 }
 
-// Function to hide/show job cards based on blacklist
-function applyFilter() {
+// Function to hide job cards based on company blacklist
+function hideJobs() {
     numHiddenJobs = 0;
+    // Select all offer-body divs
     const offers = document.querySelectorAll("#offer-body");
     offers.forEach(body => {
-        const children = body.children;
-        if (!children || children.length < 2) return;
-        const secondChild = children[1];
-        const p = secondChild.querySelector("p.font-medium");
-        if (!p) return;
-        const company = p.textContent.trim().toLowerCase();
+        // Find the company <p>
+        const companyP = body.querySelector("p.font-medium");
+        if (!companyP) return;
+        const company = companyP.textContent.trim().toLowerCase();
+        // Find the outer card
         const card = body.closest("div.box-shadow");
         if (!card) return;
         if (blacklist.some(b => company.includes(b))) {
-            card.style.display = 'none';
-            card.style.visibility = 'hidden';
+            card.style.display = "none";
+            card.style.visibility = "hidden";
             numHiddenJobs++;
         } else {
-            card.style.display = '';
-            card.style.visibility = '';
+            card.style.display = "";
+            card.style.visibility = "";
         }
     });
-    // Update hidden jobs count in storage for popup
+
+    // Update hidden jobs count for popup
     chrome.storage.sync.set({ numHiddenJobs });
 }
 
 // Initial run
 (async () => {
     await fetchBlacklist();
-    applyFilter();
+    hideJobs();
 })();
 
-// Observe DOM changes for dynamically loaded job cards
+// Observe DOM changes for dynamically loaded cards
 const observer = new MutationObserver(() => {
-    applyFilter();
+    hideJobs();
 });
 observer.observe(document.body, { childList: true, subtree: true });
 
-// Poll blacklist from storage every 2 seconds in case it changes
+// Periodically update blacklist in case it changes
 setInterval(async () => {
     await fetchBlacklist();
-    applyFilter();
+    hideJobs();
 }, 2000);
