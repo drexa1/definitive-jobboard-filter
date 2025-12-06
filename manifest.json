@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Jobgether Board Cleaner",
+  "version": "1.0",
+  "description": "Enhance your Jobgether job search experience by filtering out unwanted job postings.",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.jobgether.com/search-offers*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": []
+}
