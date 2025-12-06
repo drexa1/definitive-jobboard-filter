@@ -31,23 +31,21 @@ async function removeCompany(id) {
 function renderList() {
     chrome.storage.sync.get(null, (items) => {
         const listEl = document.getElementById("blacklistedCompanies");
-        listEl.innerHTML = '';
-
+        listEl.innerHTML = "";
+        const explanationText = document.querySelector(".explanation-text");
         if (!items || Object.keys(items).length === 0) {
-            document.querySelector(".explanation-text").style.display = "none";
+            explanationText.style.display = "none";
             return;
         }
-
-        document.querySelector(".explanation-text").style.display = "block";
-
+        explanationText.style.display = "block";
         Object.values(items).forEach((companyObj) => {
             const li = document.createElement("li");
-            li.textContent = companyObj.company + " ";
-
+            const p = document.createElement("p");
+            p.textContent = companyObj.company;
             const btn = document.createElement("button");
             btn.textContent = "Delete";
             btn.addEventListener("click", () => removeCompany(companyObj.id));
-
+            li.appendChild(p);
             li.appendChild(btn);
             listEl.appendChild(li);
         });
