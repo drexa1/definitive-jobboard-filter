@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Job Filter",
+  "name": "Jobgether Company Filter",
   "version": "1.0.0",
   "description": "Enhance your Jobgether search experience by filtering out unwanted companies.",
   "permissions": ["storage"],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "index.html",
     "default_icon": {
       "16": "icon16.png",
       "48": "icon48.png",

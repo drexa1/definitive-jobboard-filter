@@ -1,32 +1,58 @@
-const ul = document.getElementById("blacklistedCompanies");
-const form = document.getElementById("newCompanyForm");
-const input = document.getElementById("companyInput");
+// Handle form submission
+document.getElementById("newCompanyForm").addEventListener("submit", addCompany);
 
-async function load() {
-    const items = await chrome.storage.sync.get(null);
-    ul.innerHTML = "";
-    for (const key of Object.keys(items)) {
-        addListItem(items[key].company);
+// Listen for messages from content script about hidden jobs
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === 'NUM_UPDATE') {
+        document.querySelector(".jobs-hidden").textContent = message.data;
     }
-}
-
-function addListItem(company) {
-    const li = document.createElement("li");
-    li.textContent = company;
-    li.addEventListener("click", async () => {
-        await chrome.storage.sync.remove(company);
-        void load();
-    });
-    ul.appendChild(li);
-}
-
-form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const c = input.value.trim().toLowerCase();
-    if (!c) return;
-    await chrome.storage.sync.set({ [c]: { company: c } });
-    input.value = "";
-    void load();
 });
 
-void load();
+// Add a company to blacklist
+async function addCompany(event) {
+    event.preventDefault();
+    const inputEl = document.getElementById("companyInput");
+    const inputValue = inputEl.value.trim();
+    inputEl.value = '';
+    if (!inputValue) return;
+
+    const companyObj = { id: Date.now(), company: inputValue.toLowerCase() };
+    await chrome.storage.sync.set({ [companyObj.id]: companyObj });
+    renderList();
+}
+
+// Remove a company from blacklist
+async function removeCompany(id) {
+    await chrome.storage.sync.remove(id.toString());
+    renderList();
+}
+
+// Render the list of blacklisted companies
+function renderList() {
+    chrome.storage.sync.get(null, (items) => {
+        const listEl = document.getElementById("blacklistedCompanies");
+        listEl.innerHTML = '';
+
+        if (!items || Object.keys(items).length === 0) {
+            document.querySelector(".explanation-text").style.display = "none";
+            return;
+        }
+
+        document.querySelector(".explanation-text").style.display = "block";
+
+        Object.values(items).forEach((companyObj) => {
+            const li = document.createElement("li");
+            li.textContent = companyObj.company + " ";
+
+            const btn = document.createElement("button");
+            btn.textContent = "Delete";
+            btn.addEventListener("click", () => removeCompany(companyObj.id));
+
+            li.appendChild(btn);
+            listEl.appendChild(li);
+        });
+    });
+}
+
+// Initial render
+renderList();

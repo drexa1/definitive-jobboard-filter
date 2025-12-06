@@ -1,31 +1,38 @@
-let blacklist = [];
+let numHiddenJobs = 0;
 
-async function loadBlacklist() {
-    const items = await chrome.storage.sync.get(null);
-    blacklist = Object.values(items).map(x => x.company);
-}
-
-function applyFilter() {
+function hideJobs(blacklist) {
     const offers = document.querySelectorAll("#offer-body");
     offers.forEach(body => {
-        const kids = body.children;
-        if (!kids || kids.length < 2) return;
-        const second = kids[1];
-        const p = second.querySelector("p.font-medium");
+        const children = body.children;
+        if (!children || children.length < 2) return;
+        const secondChild = children[1];
+        const p = secondChild.querySelector("p.font-medium");
         if (!p) return;
+
         const company = p.textContent.trim().toLowerCase();
         const card = body.closest("div.box-shadow");
         if (!card) return;
+
         if (blacklist.some(b => company.includes(b))) {
             card.remove();
+            numHiddenJobs++;
         }
     });
+    chrome.runtime.sendMessage({ type: 'NUM_UPDATE', data: numHiddenJobs });
 }
 
-void loadBlacklist();
+// Observe DOM changes (for dynamically loaded cards)
+const observer = new MutationObserver(() => {
+    chrome.storage.sync.get(null, (items) => {
+        const blacklist = Object.values(items).map(i => i.word);
+        hideJobs(blacklist);
+    });
+});
 
-// Refresh blacklist every 2 seconds in case popup changes it
-setInterval(() => loadBlacklist(), 2000);
+observer.observe(document.body, { childList: true, subtree: true });
 
-// Run filter every 300ms
-setInterval(() => applyFilter(), 300);
+// Initial run
+chrome.storage.sync.get(null, (items) => {
+    const blacklist = Object.values(items).map(i => i.word);
+    hideJobs(blacklist);
+});
