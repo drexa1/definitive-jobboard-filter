@@ -6,7 +6,8 @@ async function fetchBlacklist() {
     const data = await chrome.storage.sync.get(null);
     blacklist = Object.values(data)
         .filter(item => item.company)
-        .map(item => item.company.toLowerCase());
+        .map(item => item.company.toLowerCase())
+        .reverse();
 }
 
 // Function to hide cards
