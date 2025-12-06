@@ -12,27 +12,20 @@ async function fetchBlacklist() {
 // Function to hide cards
 function hideJobs() {
     numHiddenJobs = 0;
-
-    // Select all job cards
     const cards = document.querySelectorAll("div.box-shadow.new-opportunity");
-
     cards.forEach(card => {
-        // Find the company name inside the card
         const companyP = card.querySelector("p.font-medium");
         if (!companyP) return;
-
         const company = companyP.textContent.trim().toLowerCase();
-
         if (blacklist.some(b => company.includes(b))) {
-            card.style.display = 'none';
-            card.style.visibility = 'hidden';
+            card.style.display = "none";
+            card.style.visibility = "hidden";
             numHiddenJobs++;
         } else {
-            card.style.display = '';
-            card.style.visibility = '';
+            card.style.display = "";
+            card.style.visibility = "";
         }
     });
-
     // Store the number of hidden jobs for popup
     chrome.storage.sync.set({ numHiddenJobs });
 }
@@ -53,4 +46,4 @@ observer.observe(document.body, { childList: true, subtree: true });
 setInterval(async () => {
     await fetchBlacklist();
     hideJobs();
-}, 2000);
+}, 500);
