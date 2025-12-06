@@ -11,7 +11,7 @@ button {
     cursor: pointer;
 }
 .top-row {
-    background-color: #0a66c2;
+    background: linear-gradient(to right, #019CEE 0%, #01CB1C 100%);
     padding: 4px 8px;
     margin: -8px -8px 12px;
 }
