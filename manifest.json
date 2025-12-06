@@ -14,7 +14,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*jobgether.com/search-offers*"],
+      "matches": ["*://jobgether.com/search-offers*"],
       "js": ["content.js"],
       "run_at": "document_idle"
     }
