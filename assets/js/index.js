@@ -51,7 +51,7 @@ async function renderList() {
     }
 
     // Render companies only (skip non-company keys like numHiddenJobs)
-    Object.values(items).forEach((companyObj) => {
+    Object.values(items).sort((a, b) => b.id - a.id).forEach((companyObj) => {
         if (!companyObj.company || !companyObj.id) return;
 
         const li = document.createElement("li");
