@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Job Filter",
   "version": "1.0.0",
-  "description": "Filter job cards by blacklist.",
+  "description": "Enhance your Jobgether search experience by filtering out unwanted companies.",
   "permissions": ["storage"],
   "action": {
     "default_popup": "popup.html",
