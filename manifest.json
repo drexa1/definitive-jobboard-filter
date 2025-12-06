@@ -15,7 +15,7 @@
   "content_scripts": [
     {
       "matches": ["*://jobgether.com/search-offers*"],
-      "js": ["content.js"],
+      "js": ["assets/js/content.js"],
       "run_at": "document_idle"
     }
   ]
