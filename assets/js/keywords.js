@@ -2,6 +2,8 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    const keywordsAccordion = document.getElementById("collapseKeywords");
+    const keywordsHeader = document.getElementById("headingKeywords");
     const addBtn = document.getElementById("addKeyword");
     const inputField = document.getElementById("keywordInput");
     const clearAllBtn = document.getElementById("clearKeywordsBtn");
@@ -20,8 +22,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Render the placeholder
     function renderKeywords(keywords) {
         keywordsList.innerHTML = ""; // clear old items
-        keywords.forEach(keyword => addKeyword(keyword));
+        keywords.forEach(keyword => addKeyword(keyword, false));
     }
+
+    keywordsAccordion.addEventListener("show.bs.collapse", function () {
+        keywordsHeader.style.backgroundColor = "var(--bs-accordion-active-bg)";
+    });
+    keywordsAccordion.addEventListener("hide.bs.collapse", function () {
+        keywordsHeader.style.backgroundColor = "white";
+    });
 
     clearAllBtn.addEventListener("click", () => {
         keywordsList.innerHTML = "";
@@ -46,11 +55,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             renderKeywords(lines);
         };
         reader.readAsText(file);
+        fileInput.value = ""
     });
 
     saveBtn.addEventListener("click", () => {
         // Get all keywords from the list
-        const keywords = Array.from(keywordsList.querySelectorAll("li")).map(li => li.textContent);
+        const keywords = Array.from(keywordsList.querySelectorAll("li span")).map(li => li.textContent);
         if (keywords.length === 0) return;
         const blob = new Blob([keywords.join("\n")], { type: "text/plain" });
         // Trigger download
@@ -67,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         await writable.close();
     }
 
-    function addKeyword(value) {
+    function addKeyword(value, insertAtFirst) {
         if (!value) return;
 
         // Create new item
@@ -93,10 +103,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Append elements
         li.appendChild(span);
         li.appendChild(deleteBtn);
-        keywordsList.insertBefore(li, keywordsList.firstChild);
+        if (insertAtFirst) {
+            keywordsList.insertBefore(li, keywordsList.firstChild);
+        } else {
+            keywordsList.appendChild(li);
+        }
 
         // Save updated list
-        const keywords = Array.from(keywordsList.querySelectorAll("li")).map(li => li.textContent);
+        const keywords = Array.from(keywordsList.querySelectorAll("li span")).map(li => li.textContent);
         chrome.storage.local.set({ keywords }, () => {
             console.log(`💾 Added keyword: ${value}`);
         });
@@ -110,7 +124,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (e.key === "Enter") {
             e.preventDefault();
             const value = inputField.value.trim();
-            addKeyword(value);
+            addKeyword(value, true);
             inputField.value = ""; // clear input
         }
     });

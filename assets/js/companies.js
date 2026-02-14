@@ -2,6 +2,8 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    const companiesAccordion = document.getElementById("collapseCompanies");
+    const companiesHeader = document.getElementById("headingCompanies");
     const addBtn = document.getElementById("addCompany");
     const inputField = document.getElementById("companyInput");
     const clearAllBtn = document.getElementById("clearCompaniesBtn");
@@ -20,12 +22,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Render the placeholder
     function renderCompanies(companies) {
         companiesList.innerHTML = ""; // clear old items
-        companies.forEach(company => addCompany(company));
+        companies.forEach(company => addCompany(company, false));
     }
+
+    companiesAccordion.addEventListener("show.bs.collapse", function () {
+        companiesHeader.style.backgroundColor = "var(--bs-accordion-active-bg)";
+    });
+    companiesAccordion.addEventListener("hide.bs.collapse", function () {
+        companiesHeader.style.backgroundColor = "white";
+    });
 
     clearAllBtn.addEventListener("click", function(e) {
         e.stopPropagation(); // prevent the accordion from toggling
-        console.log('Trash clicked');
     });
 
     clearAllBtn.addEventListener("click", () => {
@@ -51,11 +59,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             renderCompanies(lines);
         };
         reader.readAsText(file);
+        fileInput.value = ""
     });
 
     saveBtn.addEventListener("click", () => {
         // Get all company names from the list
-        const companies = Array.from(companiesList.querySelectorAll("li")).map(li => li.textContent);
+        const companies = Array.from(companiesList.querySelectorAll("li span")).map(li => li.textContent);
         if (companies.length === 0) return;
         const blob = new Blob([companies.join("\n")], { type: "text/plain" });
         // Trigger download
@@ -72,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         await writable.close();
     }
 
-    function addCompany(value) {
+    function addCompany(value, insertAtFirst) {
         if (!value) return;
 
         // Create new item
@@ -98,7 +107,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Append elements
         li.appendChild(span);
         li.appendChild(deleteBtn);
-        companiesList.insertBefore(li, companiesList.firstChild);
+        if (insertAtFirst) {
+            companiesList.insertBefore(li, companiesList.firstChild);
+        } else {
+            companiesList.appendChild(li);
+        }
 
         // Save updated list
         const companies = Array.from(companiesList.querySelectorAll("li span")).map(s => s.textContent);
@@ -115,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (e.key === "Enter") {
             e.preventDefault();
             const value = inputField.value.trim();
-            addCompany(value);
+            addCompany(value, true);
             inputField.value = ""; // clear input
         }
     });
