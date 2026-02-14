@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>The definitive jobboard filter</title>
+        <!-- Bootstrap -->
+        <script defer src="assets/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="assets/styles/bootstrap.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- Ours -->
+        <script defer src="assets/js/popup.js"></script>
+        <script defer src="assets/js/companies.js"></script>
+        <script defer src="assets/js/keywords.js"></script>
+        <link rel="stylesheet" href="assets/styles/popup.css">
+        <link rel="stylesheet" href="assets/styles/filters.css">
+    </head>
+    <body>
+        <div class="p-3">
+
+            <div id="popupCarousel" class="carousel slide">
+                <div class="carousel-inner">
+
+                    <!-- Card 1: job boards -->
+                    <div class="carousel-item active">
+                        <div class="accordion" id="jobBoardsAccordion">
+                            <!-- LinkedIn -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingLinkedIn">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLinkedIn" aria-expanded="false" aria-controls="collapseLinkedIn">
+                                        <img id="linkedinIcon" src="assets/icons/jobboards/linkedin.png" alt="LinkedIn" style="width:16px; height:16px;" class="me-2">
+                                        <span id="linkedinLabel">LinkedIn</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseLinkedIn" class="accordion-collapse collapse" aria-labelledby="headingLinkedIn" data-bs-parent="#jobBoardsAccordion">
+                                    <div class="accordion-body">
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="linkedinHundred">
+                                                <label class="form-check-label ms-2" for="linkedinHundred">Hide +100 applicants</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="linkedinDismissed">
+                                                <label class="form-check-label ms-2" for="linkedinDismissed">Hide dismissed</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="linkedinPromoted">
+                                                <label class="form-check-label ms-2" for="linkedinPromoted">Hide promoted</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="linkedinViewed">
+                                                <label class="form-check-label ms-2" for="linkedinViewed">Hide viewed</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="linkedinCompaniesToggle">
+                                                <label class="form-check-label ms-2" for="linkedinCompaniesToggle">Hide companies</label>
+                                            </div>
+                                            <button id="linkedinCompaniesBtn" disabled type="button" class="btn btn-outline-secondary btn-sm go-to-card" data-target-card="1">
+                                                <i class="bi bi-eye-slash d-flex justify-content-center align-items-center"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="linkedinKeywordsToggle">
+                                                <label class="form-check-label ms-2" for="linkedinKeywordsToggle">Hide by keywords</label>
+                                            </div>
+                                            <button id="linkedinKeywordsBtn" disabled type="button" class="btn btn-outline-secondary btn-sm go-to-card" data-target-card="2">
+                                                <i class="bi bi-eye-slash d-flex justify-content-center align-items-center"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Jobgether -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingJobgether">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJobgether" aria-expanded="false" aria-controls="collapseJobgether">
+                                        <img id="jobgetherIcon" src="assets/icons/jobboards/jobgether.png" alt="Jobgether" style="width:16px; height:16px;" class="me-2">
+                                        <span id="jobgetherLabel">Jobgether</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseJobgether" class="accordion-collapse collapse" aria-labelledby="headingJobgether" data-bs-parent="#jobBoardsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="jobgetherToggle" checked>
+                                            <label class="form-check-label" for="jobgetherToggle">Enabled</label>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="jobgetherCompaniesToggle">
+                                                <label class="form-check-label ms-2" for="jobgetherCompaniesToggle">Hide companies</label>
+                                            </div>
+                                            <button id="jobgetherCompaniesBtn" disabled type="button" class="btn btn-outline-secondary btn-sm go-to-card" data-target-card="1">
+                                                <i class="bi bi-eye-slash d-flex justify-content-center align-items-center"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="jobgetherKeywordsToggle">
+                                                <label class="form-check-label ms-2" for="jobgetherKeywordsToggle">Hide by keywords</label>
+                                            </div>
+                                            <button id="jobgetherKeywordsBtn" disabled type="button" class="btn btn-outline-secondary btn-sm go-to-card" data-target-card="2">
+                                                <i class="bi bi-eye-slash d-flex justify-content-center align-items-center"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- JustJoin IT -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingJustJoin">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJustJoin" aria-expanded="false" aria-controls="collapseJustJoin">
+                                        <img id="justjoinIcon" src="assets/icons/jobboards/justjoinit.png" alt="JustJoin" style="width:16px; height:16px;" class="me-2">
+                                        <span id="justjoinLabel">JustJoin</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseJustJoin" class="accordion-collapse collapse" aria-labelledby="headingJustJoin" data-bs-parent="#jobBoardsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="justjoinToggle" checked>
+                                            <label class="form-check-label" for="justjoinToggle">Enabled</label>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="justjoinCompaniesToggle">
+                                                <label class="form-check-label ms-2" for="justjoinCompaniesToggle">Hide companies</label>
+                                            </div>
+                                            <button id="justjoinCompaniesBtn" disabled type="button" class="btn btn-outline-secondary btn-sm go-to-card" data-target-card="1">
+                                                <i class="bi bi-eye-slash d-flex justify-content-center align-items-center"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="justjoinKeywordsToggle">
+                                                <label class="form-check-label ms-2" for="justjoinKeywordsToggle">Hide by keywords</label>
+                                            </div>
+                                            <button id="justjoinKeywordsBtn" disabled type="button" class="btn btn-outline-secondary btn-sm go-to-card" data-target-card="2">
+                                                <i class="bi bi-eye-slash d-flex justify-content-center align-items-center"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Web3career -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingWeb3career">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeb3career" aria-expanded="false" aria-controls="collapseWeb3career">
+                                        <img id="web3careerIcon" src="assets/icons/jobboards/web3career.png" alt="Web3career" style="width:16px; height:16px;" class="me-2">
+                                        <span id="web3careerLabel">Web3career</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseWeb3career" class="accordion-collapse collapse" aria-labelledby="headingWeb3career" data-bs-parent="#jobBoardsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="web3careerToggle" checked>
+                                            <label class="form-check-label" for="web3careerToggle">Enabled</label>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="web3careerCompaniesToggle">
+                                                <label class="form-check-label ms-2" for="web3careerCompaniesToggle">Hide companies</label>
+                                            </div>
+                                            <button id="web3careerCompaniesBtn" disabled type="button" class="btn btn-outline-secondary btn-sm go-to-card" data-target-card="1">
+                                                <i class="bi bi-eye-slash d-flex justify-content-center align-items-center"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="web3careerKeywordsToggle">
+                                                <label class="form-check-label ms-2" for="web3careerKeywordsToggle">Hide by keywords</label>
+                                            </div>
+                                            <button id="web3careerKeywordsBtn" disabled type="button" class="btn btn-outline-secondary btn-sm go-to-card" data-target-card="2">
+                                                <i class="bi bi-eye-slash d-flex justify-content-center align-items-center"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: companies -->
+                    <div class="carousel-item companies-filter">
+                        <!-- Header -->
+                        <div class="d-flex align-items-center mb-3 header">
+                            <button class="btn btn-sm go-to-card card-button" data-target-card="0">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <h5 class="ms-1 card-title">Companies</h5>
+                        </div>
+                        <!-- Input -->
+                        <div class="d-flex align-items-center">
+                            <label>
+                                <input id="companyInput" type="text" class="form-control">
+                            </label>
+                            <button id="addCompany" class="btn btn-sm ms-auto card-button">
+                                <i class="bi bi-plus-circle-fill"></i>
+                            </button>
+                        </div>
+                        <!-- Load/save -->
+                        <div class="mt-3">
+                            <button id="loadCompaniesBtn" class="btn btn-sm btn-primary">
+                                <span>Load</span>
+                            </button>
+                            <button id="saveCompaniesBtn" class="btn btn-sm btn-primary">
+                                <span>Save</span>
+                            </button>
+                            <input type="file" id="companiesFileInput" accept=".txt" style="display:none">
+                        </div>
+                        <!-- List -->
+                        <div class="mt-1 accordion" id="companiesAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header d-flex align-items-center justify-content-between" id="headingCompanies">
+                                    <span class="accordion-button mb-0"
+                                          type="button"
+                                          data-bs-toggle="collapse"
+                                          data-bs-target="#collapseCompanies"
+                                          aria-expanded="true"
+                                          aria-controls="collapseCompanies">
+                                        Filtered companies
+                                    </span>
+                                    <button id="clearCompaniesBtn" class="btn btn-sm btn-outline-primary me-2" type="button">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </h2>
+                                <div id="collapseCompanies" class="accordion-collapse collapse show" aria-labelledby="headingCompanies">
+                                    <div class="hidden-companies accordion-body p-0">
+                                        <ul id="companiesList" class="list-group list-group-flush">
+                                            <!-- Placeholder -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: keywords -->
+                    <div class="carousel-item keywords-filter">
+                        <!-- Header -->
+                        <div class="d-flex align-items-center mb-5 header">
+                            <button class="btn btn-sm go-to-card card-button" data-target-card="0">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <h5 class="ms-1 card-title">Keywords</h5>
+                        </div>
+                        <!-- Input -->
+                        <div class="d-flex align-items-center">
+                            <label>
+                                <input id="keywordInput" type="text" class="form-control">
+                            </label>
+                            <button id="addKeyword" class="btn btn-sm ms-auto card-button">
+                                <i class="bi bi-plus-circle-fill"></i>
+                            </button>
+                        </div>
+                        <!-- Load/save -->
+                        <div class="mt-3">
+                            <button id="loadKeywordsBtn" class="btn btn-sm btn-primary">
+                                <span>Load</span>
+                            </button>
+                            <button id="saveKeywordsBtn" class="btn btn-sm btn-primary">
+                                <span>Save</span>
+                            </button>
+                            <input type="file" id="keywordsFileInput" accept=".txt" style="display:none">
+                        </div>
+                        <!-- List -->
+                        <div class="mt-1 accordion" id="keywordsAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header d-flex align-items-center justify-content-between" id="headingKeywords">
+                                    <span class="accordion-button mb-0"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapseKeywords"
+                                            aria-expanded="true"
+                                            aria-controls="collapseKeywords">
+                                        Filtered keywords
+                                    </span>
+                                    <button id="clearKeywordsBtn" class="btn btn-sm btn-outline-primary me-2" type="button">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </h2>
+                                <div id="collapseKeywords" class="accordion-collapse collapse show" aria-labelledby="headingKeywords">
+                                    <div class="hidden-companies accordion-body p-0">
+                                        <ul id="keywordsList" class="list-group list-group-flush">
+                                            <!-- Placeholder -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>

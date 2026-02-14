@@ -1,21 +1,54 @@
 {
   "manifest_version": 3,
-  "name": "Jobgether Company Filter",
+  "name": "The definitive job boards filter",
   "version": "1.0.0",
-  "description": "Enhance your Jobgether search experience by filtering out unwanted companies.",
+  "description": "Enhance your job search experience by hiding out companies you despise.",
   "permissions": ["storage"],
   "action": {
-    "default_popup": "index.html",
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "assets/icons/icon16.png",
       "48": "assets/icons/icon48.png",
       "128": "assets/icons/icon128.png"
     }
   },
+  "background": {
+    "service_worker": "assets/js/background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["panel.html", "assets/styles/filters.css"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "content_scripts": [
     {
-      "matches": ["*://jobgether.com/search-offers*"],
-      "js": ["assets/js/content.js"],
+      "matches": [
+        "*://www.linkedin.com/jobs/search*"
+      ],
+      "js": ["assets/js/jobboards/linkedin.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "*://jobgether.com/search-offers*",
+        "*://jobgether.com/remote-jobs*"
+      ],
+      "js": ["assets/js/jobboards/jobgether.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "*://justjoin.it/job-offers*"
+      ],
+      "js": ["assets/js/jobboards/justjoin.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "*://web3.career/*"
+      ],
+      "js": ["assets/js/jobboards/web3career.js"],
       "run_at": "document_idle"
     }
   ]

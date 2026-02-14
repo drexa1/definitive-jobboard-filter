@@ -1,6 +1,8 @@
 let blacklist = [];
 let numHiddenJobs = 0;
 
+console.log("👋 Jobgether bastards")
+
 // Fetch the blacklist from storage
 async function fetchBlacklist() {
     const data = await chrome.storage.sync.get(null);
@@ -37,14 +39,14 @@ function hideJobs() {
     hideJobs();
 })();
 
-// Observe DOM changes for dynamically loaded jobs
-const observer = new MutationObserver(() => {
-    hideJobs();
-});
-observer.observe(document.body, { childList: true, subtree: true });
-
 // Periodically update blacklist
 setInterval(async () => {
     await fetchBlacklist();
     hideJobs();
 }, 500);
+
+// Observe DOM changes for dynamically loaded jobs
+const observer = new MutationObserver(() => {
+    hideJobs();
+});
+observer.observe(document.body, { childList: true, subtree: true });

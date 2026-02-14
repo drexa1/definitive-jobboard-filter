@@ -1,0 +1,68 @@
+root {
+    --google-grey-700: rgb(95, 99, 104);
+}
+body {
+    background-color: #F5F5F5;
+    width: 20rem;
+    min-height: 10rem;
+    max-height: 20rem;
+}
+.accordion-header span, label {
+    font-size: 0.8rem;
+    color: var(--google-grey-700);
+}
+.accordion-body span, label {
+    font-size: 0.8rem;
+}
+.accordion-button::after {
+    display: none;
+}
+.disabled-dashboard-icon {
+    opacity: 0.5;
+}
+.card-button {
+    transition: background-color 0.2s;
+    background-color: transparent;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+}
+.card-button:hover {
+    background-color: lightgray;
+}
+.card-button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    background-color: lightgray !important;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+}
+.card-button:active {
+    background-color: #d0d0d0 !important;
+    transform: translateY(1px);
+}
+.card-title {
+    color: var(--google-grey-700) !important;
+}
+.form-control:focus, .accordion-button:focus {
+    border-color: lightblue;
+    box-shadow: 0 0 0 0.05rem rgba(0,0,0,.08);
+}
+.companies-filter input, .keywords-filter input {
+    font-size: 0.8rem;
+    width: 16rem;
+}
+.hidden-companies.accordion-body {
+    max-height: 20rem;
+    overflow-y: auto;
+}
+.hidden-companies ul li {
+    font-size: 0.8rem;
+}
+#headingCompanies, #headingKeywords,
+#headingCompanies .clear-button:hover, #headingKeywords .clear-button:hover,
+#headingCompanies .clear-button:focus, #headingKeywords .clear-button:focus,
+#headingCompanies .clear-button:active, #headingKeywords .clear-button:active {
+    background-color: var(--bs-accordion-active-bg); !important;
+}
