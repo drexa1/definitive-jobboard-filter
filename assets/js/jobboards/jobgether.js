@@ -1,52 +1,76 @@
-let blacklist = [];
-let numHiddenJobs = 0;
-
+/* global chrome */
 console.log("👋 Jobgether bastards")
 
-// Fetch the blacklist from storage
-async function fetchBlacklist() {
-    const data = await chrome.storage.sync.get(null);
-    blacklist = Object.values(data)
-        .filter(item => item.company)
-        .map(item => item.company.toLowerCase())
-        .reverse();
+let companiesBlacklist = [];
+let keywordsBlacklist = [];
+let numHiddenJobs = 0;
+
+// Fetch the blacklists from storage
+async function fetchCompaniesBlacklist() {
+    try {
+        const { companies = [] } = await chrome.storage.local.get("companies");
+        companiesBlacklist = companies;
+    } catch (err) {
+        console.warn("Storage access failed:", err);
+    }
 }
+async function fetchKeywordsBlacklist() {
+    try {
+        const { keywords = [] } = await chrome.storage.local.get("keywords");
+        keywordsBlacklist = keywords;
+    } catch (err) {
+        console.warn("Storage access failed:", err);
+    }
+}
+
 
 // Function to hide cards
 function hideJobs() {
-    numHiddenJobs = 0;
-    const cards = document.querySelectorAll("div.box-shadow.new-opportunity");
-    cards.forEach(card => {
-        const companyP = card.querySelector("p.font-medium");
-        if (!companyP) return;
-        const company = companyP.textContent.trim().toLowerCase();
-        if (blacklist.some(b => company.includes(b))) {
+    const jobListing = document.querySelector('div[data-hk="s10000000000010"]');
+    // Exclude the counter
+    const jobCards = jobListing.querySelectorAll(":scope > div:not(:first-child)");
+    jobCards.forEach(card => {
+        // FILTER BY COMPANY
+        const heading = card.querySelector(".w-12.h-12")?.nextElementSibling;
+        const companyName = heading?.querySelector("p a")?.innerText;
+        if (!companyName) return;
+        const blacklistedCompany = companiesBlacklist.find(blacklisted => blacklisted === companyName);
+        // FILTER BY KEYWORDS
+
+        // DAYS AGO
+
+        if (blacklistedCompany) {
             card.style.display = "none";
             card.style.visibility = "hidden";
             numHiddenJobs++;
-        } else {
-            card.style.display = "";
-            card.style.visibility = "";
         }
     });
-    // Store the number of hidden jobs for popup
-    chrome.storage.sync.set({ numHiddenJobs });
 }
 
 // Initial fetch and hide
 (async () => {
-    await fetchBlacklist();
+    await fetchCompaniesBlacklist();
+    await fetchKeywordsBlacklist();
     hideJobs();
 })();
 
-// Periodically update blacklist
-setInterval(async () => {
-    await fetchBlacklist();
-    hideJobs();
-}, 500);
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === "local") {
+        if (changes.companies) {
+            companiesBlacklist = changes.companies.newValue || [];
+        }
+        if (changes.keywords) {
+            keywordsBlacklist = changes.keywords.newValue || [];
+        }
+        hideJobs();
+    }
+});
 
 // Observe DOM changes for dynamically loaded jobs
 const observer = new MutationObserver(() => {
+    if (document.querySelector('div[data-hk="s10000000000010"]')) {
+        chrome.runtime.sendMessage({ jobboard: "jobgether" });
+    }
     hideJobs();
 });
 observer.observe(document.body, { childList: true, subtree: true });
