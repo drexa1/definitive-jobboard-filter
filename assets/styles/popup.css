@@ -57,8 +57,9 @@ body {
     max-height: 20rem;
     overflow-y: auto;
 }
-.hidden-companies ul li {
+.hidden-companies ul li, .days-ago-dropdown {
     font-size: 0.8rem;
+    color: var(--google-grey-700);
 }
 #headingCompanies, #headingKeywords,
 #headingCompanies .clear-button:hover, #headingKeywords .clear-button:hover,

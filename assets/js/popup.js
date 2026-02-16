@@ -12,19 +12,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     const toggleButtons = [
-        { toggleId: "linkedinCompaniesToggle", buttonId: "linkedinCompaniesBtn" },
-        { toggleId: "linkedinKeywordsToggle", buttonId: "linkedinKeywordsBtn" },
-        { toggleId: "jobgetherCompaniesToggle", buttonId: "jobgetherCompaniesBtn" },
-        { toggleId: "jobgetherKeywordsToggle", buttonId: "jobgetherKeywordsBtn" },
-        { toggleId: "justjoinCompaniesToggle", buttonId: "justjoinCompaniesBtn" },
-        { toggleId: "justjoinKeywordsToggle", buttonId: "justjoinKeywordsBtn" },
-        { toggleId: "web3careerCompaniesToggle", buttonId: "web3careerCompaniesBtn" },
-        { toggleId: "web3careerKeywordsToggle", buttonId: "web3careerKeywordsBtn" }
+        { toggleId: "linkedinDaysAgoToggle", componentId: "linkedinDaysAgoDropdown" },
+        { toggleId: "linkedinCompaniesToggle", componentId: "linkedinCompaniesBtn" },
+        { toggleId: "linkedinKeywordsToggle", componentId: "linkedinKeywordsBtn" },
+
+        { toggleId: "jobgetherDaysAgoToggle", componentId: "jobgetherDaysAgoDropdown" },
+        { toggleId: "jobgetherCompaniesToggle", componentId: "jobgetherCompaniesBtn" },
+        { toggleId: "jobgetherKeywordsToggle", componentId: "jobgetherKeywordsBtn" },
+
+        { toggleId: "justjoinCompaniesToggle", componentId: "justjoinCompaniesBtn" },
+        { toggleId: "justjoinKeywordsToggle", componentId: "justjoinKeywordsBtn" },
+
+        { toggleId: "web3careerCompaniesToggle", componentId: "web3careerCompaniesBtn" },
+        { toggleId: "web3careerKeywordsToggle", componentId: "web3careerKeywordsBtn" }
     ]
-    const updateButtonState = (toggle, button) => {
-        button.classList.toggle("btn-outline-primary", toggle.checked);
-        button.classList.toggle("btn-outline-secondary", !toggle.checked);
-        button.disabled = !toggle.checked;
+    const updateButtonState = (toggle, component) => {
+        if (component.type === "button") {
+            component.classList.toggle("btn-outline-primary", toggle.checked);
+            component.classList.toggle("btn-outline-secondary", !toggle.checked);
+        }
+        component.disabled = !toggle.checked;
     };
 
     const toggles = Array.from(document.querySelectorAll("input[type='checkbox']"));
@@ -37,9 +44,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 toggle.checked = result[toggleId];
                 // If it is the companies or keywords toggle, restore the button too
                 if (toggleButtons.map(m => m.toggleId).includes(toggleId)) {
-                    const buttonId = toggleButtons.find(m => m.toggleId === toggleId)?.buttonId;
-                    const button = document.getElementById(buttonId);
-                    updateButtonState(toggle, button);
+                    const componentId = toggleButtons.find(m => m.toggleId === toggleId)?.componentId;
+                    const component = document.getElementById(componentId);
+                    updateButtonState(toggle, component);
                 }
             }
         });
@@ -54,11 +61,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Companies and keywords highlighting
-    toggleButtons.forEach(function ({ toggleId, buttonId }) {
+    toggleButtons.forEach(function ({ toggleId, componentId }) {
         const toggle = document.getElementById(toggleId);
-        const button = document.getElementById(buttonId);
+        const component = document.getElementById(componentId);
         // Update on user change
-        toggle.addEventListener("change", () => updateButtonState(toggle, button));
+        toggle.addEventListener("change", () => updateButtonState(toggle, component));
     });
 
 });

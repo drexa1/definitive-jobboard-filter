@@ -36,10 +36,20 @@ function hideJobs() {
         if (!companyName) return;
         const blacklistedCompany = companiesBlacklist.find(blacklisted => blacklisted === companyName);
         // FILTER BY KEYWORDS
-
+        const titleLink  = heading?.querySelector('a[title]');
+        const positionTitle = titleLink?.textContent.trim();
+        const blacklistedKeywordsInTitle = keywordsBlacklist.some(blacklisted => positionTitle.toLowerCase().includes(blacklisted.toLowerCase()));
+        const remoteRow = heading?.parentElement?.nextElementSibling;
+        const skillLinks = remoteRow?.nextElementSibling?.querySelectorAll("a");
+        const blacklistedKeywordsInSkills = Array.from(skillLinks).some(skillLink => {
+            const skill = skillLink.textContent.trim().toLowerCase();
+            return keywordsBlacklist.some(blacklisted => skill.includes(blacklisted.toLowerCase()));
+        });
         // DAYS AGO
-
-        if (blacklistedCompany) {
+        const daysAgo = titleLink?.nextElementSibling?.textContent;
+        const numDaysAgo = daysAgo?.match(/\d+/) ? Number(daysAgo?.match(/\d+/)[0]) : null;
+        const tooOld = false;
+        if (blacklistedCompany || blacklistedKeywordsInTitle || blacklistedKeywordsInSkills || tooOld) {
             card.style.display = "none";
             card.style.visibility = "hidden";
             numHiddenJobs++;
