@@ -12,6 +12,7 @@
         <script defer src="assets/js/popup.js"></script>
         <script defer src="assets/js/companies.js"></script>
         <script defer src="assets/js/keywords.js"></script>
+        <script defer src="assets/js/daysago.js"></script>
         <link rel="stylesheet" href="assets/styles/popup.css">
         <link rel="stylesheet" href="assets/styles/filters.css">
     </head>
@@ -68,6 +69,7 @@
                                                 <input class="form-check-input" type="checkbox" id="linkedinDaysAgoToggle">
                                                 <label class="form-check-label ms-2" for="linkedinDaysAgoToggle">Recent as</label>
                                             </div>
+                                            <label for="linkedinDaysAgoDropdown"></label>
                                             <select id="linkedinDaysAgoDropdown" class="days-ago-dropdown" disabled>
                                                 <option value="today">Last 24h</option>
                                                 <option value="week" selected>1 week</option>
@@ -115,6 +117,7 @@
                                                 <input class="form-check-input" type="checkbox" id="jobgetherDaysAgoToggle">
                                                 <label class="form-check-label ms-2" for="jobgetherDaysAgoToggle">Recent as</label>
                                             </div>
+                                            <label for="jobgetherDaysAgoDropdown"></label>
                                             <select id="jobgetherDaysAgoDropdown" class="days-ago-dropdown" disabled>
                                                 <option value="today">Last 24h</option>
                                                 <option value="week" selected>1 week</option>
@@ -155,9 +158,18 @@
                                 </h2>
                                 <div id="collapseJustJoin" class="accordion-collapse collapse" aria-labelledby="headingJustJoin" data-bs-parent="#jobBoardsAccordion">
                                     <div class="accordion-body">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="justjoinToggle" checked>
-                                            <label class="form-check-label" for="justjoinToggle">Enabled</label>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="justjoinDaysAgoToggle">
+                                                <label class="form-check-label ms-2" for="justjoinDaysAgoToggle">Recent as</label>
+                                            </div>
+                                            <label for="justjoinDaysAgoDropdown"></label>
+                                            <select id="justjoinDaysAgoDropdown" class="days-ago-dropdown" disabled>
+                                                <option value="today">Last 24h</option>
+                                                <option value="week" selected>1 week</option>
+                                                <option value="month">1 month</option>
+                                            </select>
                                         </div>
 
                                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -193,9 +205,18 @@
                                 </h2>
                                 <div id="collapseWeb3career" class="accordion-collapse collapse" aria-labelledby="headingWeb3career" data-bs-parent="#jobBoardsAccordion">
                                     <div class="accordion-body">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="web3careerToggle" checked>
-                                            <label class="form-check-label" for="web3careerToggle">Enabled</label>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="web3careerDaysAgoToggle">
+                                                <label class="form-check-label ms-2" for="web3careerDaysAgoToggle">Recent as</label>
+                                            </div>
+                                            <label for="web3careerDaysAgoDropdown"></label>
+                                            <select id="web3careerDaysAgoDropdown" class="days-ago-dropdown" disabled>
+                                                <option value="today">Last 24h</option>
+                                                <option value="week" selected>1 week</option>
+                                                <option value="month">1 month</option>
+                                            </select>
                                         </div>
 
                                         <div class="d-flex justify-content-between align-items-center mb-2">

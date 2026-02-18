@@ -20,9 +20,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         { toggleId: "jobgetherCompaniesToggle", componentId: "jobgetherCompaniesBtn" },
         { toggleId: "jobgetherKeywordsToggle", componentId: "jobgetherKeywordsBtn" },
 
+        { toggleId: "justjoinDaysAgoToggle", componentId: "justjoinDaysAgoDropdown" },
         { toggleId: "justjoinCompaniesToggle", componentId: "justjoinCompaniesBtn" },
         { toggleId: "justjoinKeywordsToggle", componentId: "justjoinKeywordsBtn" },
 
+        { toggleId: "web3careerDaysAgoToggle", componentId: "web3careerDaysAgoDropdown" },
         { toggleId: "web3careerCompaniesToggle", componentId: "web3careerCompaniesBtn" },
         { toggleId: "web3careerKeywordsToggle", componentId: "web3careerKeywordsBtn" }
     ]
@@ -52,10 +54,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
     // Save state on change
-    toggles.forEach(cb => {
-        cb.addEventListener("change", () => {
+    toggles.forEach(toggle => {
+        toggle.addEventListener("change", () => {
             chrome.storage.local.set({
-                [cb.id]: cb.checked
+                [toggle.id]: toggle.checked
             });
         });
     });

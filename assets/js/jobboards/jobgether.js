@@ -3,6 +3,8 @@ console.log("👋 Jobgether bastards")
 
 let companiesBlacklist = [];
 let keywordsBlacklist = [];
+let daysAgoFilter = null;
+
 let numHiddenJobs = 0;
 
 // Fetch the blacklists from storage
@@ -14,10 +16,24 @@ async function fetchCompaniesBlacklist() {
         console.warn("Storage access failed:", err);
     }
 }
+
 async function fetchKeywordsBlacklist() {
     try {
         const { keywords = [] } = await chrome.storage.local.get("keywords");
         keywordsBlacklist = keywords;
+    } catch (err) {
+        console.warn("Storage access failed:", err);
+    }
+}
+
+async function fetchDaysAgo() {
+    try {
+        chrome.storage.local.get("jobgetherDaysAgoToggle", async (checked) => {
+            if (checked) {
+                const { daysago = [] } = await chrome.storage.local.get("daysago");
+                daysAgoFilter = daysago["jobgetherDaysAgoDropdown"];
+            }
+        });
     } catch (err) {
         console.warn("Storage access failed:", err);
     }
@@ -47,12 +63,28 @@ function hideJobs() {
         });
         // DAYS AGO
         const daysAgo = titleLink?.nextElementSibling?.textContent;
-        const numDaysAgo = daysAgo?.match(/\d+/) ? Number(daysAgo?.match(/\d+/)[0]) : null;
-        const tooOld = false;
+        const numDaysAgo = daysAgo?.match(/\d+/) ? Number(daysAgo?.match(/\d+/)[0]) : 0;
+        const tooOld = daysAgoFilter !== null ? (() => {
+            // filter enabled
+            switch (daysAgoFilter) {
+                case "today":
+                    return numDaysAgo > 0;
+                case "week":
+                    return numDaysAgo > 7;
+                case "month":
+                    return numDaysAgo > 30;
+                default:
+                    return false;
+            }
+        })() : false;
         if (blacklistedCompany || blacklistedKeywordsInTitle || blacklistedKeywordsInSkills || tooOld) {
             card.style.display = "none";
             card.style.visibility = "hidden";
             numHiddenJobs++;
+        } else {
+            card.style.display = "";
+            card.style.visibility = "";
+            numHiddenJobs--;
         }
     });
 }
@@ -61,17 +93,20 @@ function hideJobs() {
 (async () => {
     await fetchCompaniesBlacklist();
     await fetchKeywordsBlacklist();
+    await fetchDaysAgo();
     hideJobs();
 })();
 
 chrome.storage.onChanged.addListener((changes, area) => {
     if (area === "local") {
-        if (changes.companies) {
+        if (changes.companies)
             companiesBlacklist = changes.companies.newValue || [];
-        }
-        if (changes.keywords) {
+        if (changes.keywords)
             keywordsBlacklist = changes.keywords.newValue || [];
-        }
+        if (changes.daysago)
+            daysAgoFilter = changes.daysago.newValue?.["jobgetherDaysAgoDropdown"] || null;
+        if (changes["jobgetherDaysAgoToggle"])
+            daysAgoFilter = changes.jobgetherDaysAgoToggle.newValue || null;
         hideJobs();
     }
 });
