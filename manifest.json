@@ -26,29 +26,26 @@
       "matches": [
         "*://linkedin.com/jobs/search*"
       ],
-      "js": ["assets/js/jobboards/linkedin.js"],
+      "js": ["assets/js/jobfilter.js", "assets/js/jobboards/linkedin.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": [
-        "*://jobgether.com/search-offers*",
-        "*://jobgether.com/remote-jobs*"
-      ],
-      "js": ["assets/js/jobboards/jobgether.js"],
+      "matches": ["*://jobgether.com/search-offers*", "*://jobgether.com/remote-jobs*"],
+      "js": ["assets/js/jobfilter.js", "assets/js/jobboards/jobgether.js"],
       "run_at": "document_idle"
     },
     {
       "matches": [
         "*://justjoin.it/job-offers*"
       ],
-      "js": ["assets/js/jobboards/justjoin.js"],
+      "js": ["assets/js/jobfilter.js", "assets/js/jobboards/justjoin.js"],
       "run_at": "document_idle"
     },
     {
       "matches": [
         "*://web3.career/*"
       ],
-      "js": ["assets/js/jobboards/web3career.js"],
+      "js": ["assets/js/jobfilter.js", "assets/js/jobboards/web3career.js"],
       "run_at": "document_idle"
     }
   ]
