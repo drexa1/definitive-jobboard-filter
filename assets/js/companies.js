@@ -121,16 +121,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Add company button
-    addBtn.addEventListener("click", addCompany);
+    addBtn.addEventListener("click", (e) => addValueToList(e, inputField, addCompany));
 
     // Enter key press
     inputField.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            const value = inputField.value.trim();
-            addCompany(value, true);
-            inputField.value = ""; // clear input
-        }
+        if (e.key === "Enter") addValueToList(e, inputField, addCompany);
     });
+
+    function addValueToList(e, inputField, addCompany) {
+        e.preventDefault();
+        const value = inputField.value.trim();
+        addCompany(value, true);
+        inputField.value = "";
+    }
 
 });

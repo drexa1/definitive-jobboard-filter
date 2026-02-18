@@ -117,16 +117,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Add keyword button
-    addBtn.addEventListener("click", addKeyword);
+    addBtn.addEventListener("click", (e) => addValueToList(e, inputField, addKeyword));
 
     // Enter key press
     inputField.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            const value = inputField.value.trim();
-            addKeyword(value, true);
-            inputField.value = ""; // clear input
-        }
+        if (e.key === "Enter") addValueToList(e, inputField, addKeyword);
     });
+
+    function addValueToList(e, inputField, addKeyword) {
+        e.preventDefault();
+        const value = inputField.value.trim();
+        addKeyword(value, true);
+        inputField.value = "";
+    }
 
 });
