@@ -35,9 +35,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": [
-        "*://justjoin.it/job-offers*"
-      ],
+      "matches": ["*://justjoin.it/*", "*://justjoin.it/job-offers*"],
       "js": ["assets/js/jobfilter.js", "assets/js/jobboards/justjoin.js"],
       "run_at": "document_idle"
     },
