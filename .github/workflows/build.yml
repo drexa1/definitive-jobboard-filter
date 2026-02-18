@@ -1,0 +1,23 @@
+name: Build Chrome extension
+run-name: Build Chrome extension '${{ inputs.tag || 'latest' }}'
+
+on:
+  push:
+    tags:
+      - "v*.*.*"   # triggers on version tags like v1.0.0
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Zip extension
+        run: |
+          zip -r job-filter-extension.zip ./ -x "*.git*" "*.github*"
+      - name: Create Release and upload asset
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          artifacts: job-filter-extension.zip
