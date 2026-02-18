@@ -3,8 +3,8 @@ run-name: Build Chrome extension '${{ inputs.tag || 'latest' }}'
 
 on:
   push:
-    tags:
-      - "v*.*.*"   # triggers on version tags like v1.0.0
+    branches:
+      - main
 
 jobs:
   package:
