@@ -1,55 +1,38 @@
 /* global chrome */
 console.log("👋 Web3career bastards")
 
-// Fetch the blacklists from storage
-async function fetchCompaniesBlacklist() {
-    companiesBlacklist = await chrome.storage.local.get("companies");
-}
-async function fetchKeywordsBlacklist() {
-    keywordsBlacklist = await chrome.storage.local.get("keywords");
+class Web3careerFilter extends JobFilter {
+    getJobCards() {
+        return Error("unimplemented");
+    }
 }
 
+const web3careerFilter = new Web3careerFilter();
 
-// Function to hide cards
-function hideJobs() {
-    // const jobListing = document.querySelector('div[data-hk="s10000000000010"]');
-    // Exclude the counter
-    // const jobCards = jobListing.querySelectorAll(":scope > div:not(:first-child)");
-    // jobCards.forEach(card => {
-    //     // FILTER BY COMPANY
-    //     const heading = card.querySelector(".w-12.h-12")?.nextElementSibling;
-    //     const companyName = heading?.querySelector("p a")?.innerText;
-    //     if (!companyName) return;
-    //     const blacklistedCompany = companiesBlacklist.companies.find(blacklisted => blacklisted === companyName);
-    //     // FILTER BY KEYWORDS
-    //
-    //     // DAYS AGO
-    //
-    //     if (blacklistedCompany) {
-    //         card.style.display = "none";
-    //         card.style.visibility = "hidden";
-    //         numHiddenJobs++;
-    //     }
-    // });
-}
+// Listen for storage changes (same as before, just update the instance)
+chrome.storage.onChanged.addListener((changes) => {
 
-// Initial fetch and hide
-(async () => {
-    await fetchCompaniesBlacklist();
-    hideJobs();
-})();
+    if (changes["web3careerCompaniesToggle"])
+        web3careerFilter.companiesToggleEnabled = !!changes["web3careerCompaniesToggle"].newValue;
+    if (changes.companies)
+        web3careerFilter.companiesFilter = changes.companies.newValue || [];
 
-// Periodically update blacklist
-setInterval(async () => {
-    await fetchCompaniesBlacklist();
-    hideJobs();
-}, 500);
+    if (changes["web3careerKeywordsToggle"])
+        web3careerFilter.keywordsToggleEnabled = !!changes["web3careerKeywordsToggle"].newValue;
+    if (changes.keywords)
+        web3careerFilter.keywordsFilter = changes.keywords.newValue || [];
+
+    if (changes["web3careerDaysAgoToggle"])
+        web3careerFilter.daysAgoFilterEnabled = !!changes["web3careerDaysAgoToggle"].newValue;
+    if (changes.daysago)
+        web3careerFilter.daysAgoFilter = changes.daysago.newValue?.["web3careerDaysAgoDropdown"] || null;
+
+    web3careerFilter.hideJobs();
+});
 
 // Observe DOM changes for dynamically loaded jobs
 const observer = new MutationObserver(() => {
-    if (document.querySelector(".jobs-search-results")) {
-        chrome.runtime.sendMessage({ jobboard: "web3career" });
-    }
-    hideJobs();
+    chrome.runtime.sendMessage({ jobboard: "web3career" });
+    web3careerFilter.hideJobs();
 });
 observer.observe(document.body, { childList: true, subtree: true });

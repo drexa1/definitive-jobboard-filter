@@ -50,9 +50,7 @@ chrome.storage.onChanged.addListener((changes) => {
 
 // Observe DOM changes for dynamically loaded jobs
 const observer = new MutationObserver(() => {
-    if (document.querySelector('div[data-hk="s10000000000010"]')) {
-        chrome.runtime.sendMessage({ jobboard: "jobgether" });
-    }
+    chrome.runtime.sendMessage({ jobboard: "jobgether" });
     jobgetherFilter.hideJobs();
 });
 observer.observe(document.body, { childList: true, subtree: true });
