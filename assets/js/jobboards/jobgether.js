@@ -6,10 +6,10 @@ class JobgetherFilter extends JobFilter {
         const jobListing = document.querySelector('div[data-hk="s10000000000010"]');
         const jobCards = Array.from(jobListing.querySelectorAll(":scope > div:not(:first-child)"));
         return jobCards.map(card => {
-            // Company
             const heading = card.querySelector(".w-12.h-12")?.nextElementSibling;
+            // Company
             const companyLink = heading?.querySelector("p");
-            const companyName = heading?.querySelector("p a")?.innerText;
+            const companyName = heading?.querySelector("p a")?.innerText.trim();
             // Position
             const titleLink = heading?.querySelector('a[title]');
             const positionTitle = titleLink?.textContent.trim();

@@ -6,11 +6,11 @@ class JustjoinFilter extends JobFilter {
         const jobListing = document.getElementById("up-offers-list");
         const jobCards = Array.from(jobListing.querySelectorAll(":scope > ul > li"));
         return jobCards.map(card => {
-            // Company
             const heading = card.querySelector("#offerCardCompanyLogo")?.nextElementSibling;
             const [firstRow, secondRow] = heading.querySelectorAll(":scope > div");
+            // Company
             const companyLink = secondRow?.querySelector(":scope > div:is(:first-child) > div");
-            const companyName = companyLink.querySelector("p")?.innerText;
+            const companyName = companyLink.querySelector("p")?.innerText.trim();
             // Position
             const titleLink = firstRow.querySelectorAll(":scope > div > div > h3");
             const positionTitle = titleLink[0]?.textContent.trim();
