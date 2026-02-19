@@ -1,9 +1,28 @@
 /* global chrome */
-console.log("👋 LinkedIn bastards")
 
 class LinkedinFilter extends JobFilter {
     getJobCards() {
-        return Error("unimplemented");
+        const jobListing = document.querySelector("main header")?.nextElementSibling;
+        const jobCards = Array.from(jobListing?.querySelectorAll("ul > li.ember-view") || []);
+        return jobCards.map(card => {
+            // Company
+            const companyName = "";
+            // Position
+            const positionTitle = "";
+            // Skills
+            const skills = [];
+            // Days ago
+            const numDaysAgo = 0;
+            // Job description
+            const descriptionTitle = "";
+            const jobDescription = "";
+
+            return {
+                card,
+                jobData: { companyName, positionTitle, skills, daysAgo: numDaysAgo, location, descriptionTitle, jobDescription },
+                companyLink
+            };
+        });
     }
 }
 

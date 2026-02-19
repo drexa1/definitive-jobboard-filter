@@ -58,12 +58,13 @@ class Web3careerFilter extends JobFilter {
             const location = locationLinks.length === 1
                 ? locationLinks[0].innerText?.trim()
                 : Array.from(locationLinks).map(link => link.innerText?.trim()).join(", ");
-            // Fake remote
+            // Job description
             const descriptionColumn = jobListing.parentElement.parentElement.parentElement;
             const descriptionHeader = descriptionColumn.querySelector(":scope > div:nth-of-type(2) header");
             const descriptionTitle = descriptionHeader.querySelector("h2")?.innerText.trim();
             const descriptionBlocks = descriptionHeader?.nextElementSibling.children;
             const jobDescription = Array.from(descriptionBlocks).map(p => p.innerText?.trim()).join("\n");
+
             return {
                 card,
                 jobData: { companyName, positionTitle, skills, daysAgo: numDaysAgo, location, descriptionTitle, jobDescription },
