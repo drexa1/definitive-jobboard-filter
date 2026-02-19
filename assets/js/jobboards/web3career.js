@@ -4,18 +4,30 @@ class Web3careerFilter extends JobFilter {
 
     constructor(jobBoardName, hideButtonsInsert) {
         super(jobBoardName, hideButtonsInsert);
-        this.locationUSAEnabled = false;
+        this.usaFilterEnabled = false;
+        this.remoteFilterEnabled = false;
     }
 
     async initialize() {
         await super.initialize();
         await this.fetchLocation();
+        await this.fetchRemote();
     }
 
     async fetchLocation() {
         try {
             chrome.storage.local.get(`${this.jobBoardName}USAToggle`, async (result) => {
-                this.locationUSAEnabled = !!result[`${this.jobBoardName}USAToggle`];
+                this.usaFilterEnabled = !!result[`${this.jobBoardName}USAToggle`];
+            });
+        } catch (error) {
+            console.warn("Storage access failed:", error);
+        }
+    }
+
+    async fetchRemote() {
+        try {
+            chrome.storage.local.get(`${this.jobBoardName}RemoteToggle`, async (result) => {
+                this.remoteFilterEnabled = !!result[`${this.jobBoardName}RemoteToggle`];
             });
         } catch (error) {
             console.warn("Storage access failed:", error);
@@ -35,8 +47,8 @@ class Web3careerFilter extends JobFilter {
             const titleLink = heading?.querySelectorAll(":scope > div > a > h2");
             const positionTitle = titleLink?.[0]?.innerText.trim();
             // Skills
-            const skillsLink = card.querySelector(":scope > td:last-of-type > div");
-            const skills = Array.from(skillsLink.children).map(skill => skill.textContent.trim());
+            const skillsLink = card.querySelector(":scope > td:last-of-type > div")?.children;
+            const skills = Array.from(skillsLink).map(skill => skill.textContent.trim());
             // Days ago
             const daysago = card.querySelector(":scope > td:nth-of-type(3) > time")?.textContent;
             const match = daysago?.match(/(\d+)([dh])/);
@@ -46,9 +58,15 @@ class Web3careerFilter extends JobFilter {
             const location = locationLinks.length === 1
                 ? locationLinks[0].innerText?.trim()
                 : Array.from(locationLinks).map(link => link.innerText?.trim()).join(", ");
+            // Fake remote
+            const descriptionColumn = jobListing.parentElement.parentElement.parentElement;
+            const descriptionHeader = descriptionColumn.querySelector(":scope > div:nth-of-type(2) header");
+            const descriptionTitle = descriptionHeader.querySelector("h2")?.innerText.trim();
+            const descriptionBlocks = descriptionHeader?.nextElementSibling.children;
+            const jobDescription = Array.from(descriptionBlocks).map(p => p.innerText?.trim()).join("\n");
             return {
                 card,
-                jobData: { companyName, positionTitle, skills, daysAgo: numDaysAgo, location },
+                jobData: { companyName, positionTitle, skills, daysAgo: numDaysAgo, location, descriptionTitle, jobDescription },
                 companyLink
             };
         });
@@ -56,18 +74,30 @@ class Web3careerFilter extends JobFilter {
 
     handleStorageChanges(changes) {
         super.handleStorageChanges(changes);
-        const keysOfInterest = [`${this.jobBoardName}USAToggle`];
+
+        const keysOfInterest = [`${this.jobBoardName}USAToggle`, `${this.jobBoardName}RemoteToggle`];
         const relevantChanges = Object.keys(changes).some(key => keysOfInterest.includes(key));
         if (!relevantChanges) return;
+
         const locationToggleKey = `${this.jobBoardName}USAToggle`;
-        if (changes[locationToggleKey]) this.locationUSAEnabled = !!changes[locationToggleKey].newValue;
+        if (changes[locationToggleKey]) this.usaFilterEnabled = !!changes[locationToggleKey].newValue;
+
+        const remoteToggleKey = `${this.jobBoardName}RemoteToggle`;
+        if (changes[remoteToggleKey]) this.remoteFilterEnabled = !!changes[remoteToggleKey].newValue;
         this.hideJobs();
     }
 
-    shouldHide({ companyName, positionTitle, skills, daysAgo, location }) {
+    shouldHide({ companyName, positionTitle, skills, daysAgo, location, descriptionTitle, jobDescription }) {
         const parentHide = super.shouldHide({ companyName, positionTitle, skills, daysAgo });
         // Extra stuff
-        const isUSA = this.locationUSAEnabled && location.toLowerCase().includes("United States".toLowerCase());
+        const isUSA = this.usaFilterEnabled && location.toLowerCase().includes("United States".toLowerCase());
+        const isFakeRemote = this.remoteFilterEnabled && (
+            jobDescription.toLowerCase().includes("on-site") ||
+            jobDescription.toLowerCase().includes("onsite") ||
+            jobDescription.toLowerCase().includes("hybrid")
+        ) && positionTitle === descriptionTitle; // only the list item matching the current description open
+        if (isFakeRemote)
+            alert(`🤥 '${positionTitle}' at ${companyName} is not really remote`)
         return parentHide || isUSA;
     }
 }
