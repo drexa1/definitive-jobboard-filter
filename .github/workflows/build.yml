@@ -18,9 +18,9 @@ jobs:
       - name: Zip extension
         run: |
           zip -r job-filter-extension.zip ./ -x "*.git*" "*.github*"
-      - name: Create Release and upload asset
-        uses: ncipollo/release-action@v1
+      - name: Create or update release
+        uses: softprops/action-gh-release@v1
         with:
-          tag: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
-          artifacts: job-filter-extension.zip
+          files: job-filter-extension.zip
