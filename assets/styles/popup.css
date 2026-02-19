@@ -57,7 +57,7 @@ body {
     max-height: 20rem;
     overflow-y: auto;
 }
-.hidden-companies ul li, .days-ago-dropdown {
+.hidden-companies ul li, .days-ago-dropdown, .applicants-dropdown {
     font-size: 0.8rem;
     color: var(--google-grey-700);
 }
