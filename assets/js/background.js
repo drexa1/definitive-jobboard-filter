@@ -1,3 +1,5 @@
+/* global chrome */
+
 jobboards = ["linkedin", "jobgether", "justjoin", "web3career"]
 
 chrome.runtime.onMessage.addListener((msg, sender) => {
