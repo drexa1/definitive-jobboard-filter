@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     saveBtn.addEventListener("click", () => {
         // Get all company names from the list
-        const companies = Array.from(companiesList.querySelectorAll("li span")).map(li => li.textContent);
+        const companies = Array.from(companiesList.querySelectorAll("li span")).map(li => li.innerText);
         if (companies.length === 0) return;
         const blob = new Blob([companies.join("\n")], { type: "text/plain" });
         // Trigger download
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteBtn.addEventListener("click", () => {
             li.remove();
             // Update stored
-            const companies = Array.from(companiesList.querySelectorAll("li span")).map(s => s.textContent);
+            const companies = Array.from(companiesList.querySelectorAll("li span")).map(s => s.innerText);
             chrome.storage.local.set({ companies }, () => {
                 console.log(`🗑️ Deleted company: ${value}`);
             });
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Save updated list
-        const companies = Array.from(companiesList.querySelectorAll("li span")).map(s => s.textContent);
+        const companies = Array.from(companiesList.querySelectorAll("li span")).map(s => s.innerText);
         chrome.storage.local.set({ companies }, () => {
             console.log(`💾 Added company: ${value}`);
         });

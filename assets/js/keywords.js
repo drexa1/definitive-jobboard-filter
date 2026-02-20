@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     saveBtn.addEventListener("click", () => {
         // Get all keywords from the list
-        const keywords = Array.from(keywordsList.querySelectorAll("li span")).map(li => li.textContent);
+        const keywords = Array.from(keywordsList.querySelectorAll("li span")).map(li => li.innerText);
         if (keywords.length === 0) return;
         const blob = new Blob([keywords.join("\n")], { type: "text/plain" });
         // Trigger download
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteBtn.addEventListener("click", () => {
             li.remove();
             // Update stored
-            const keywords = Array.from(keywordsList.querySelectorAll("li span")).map(s => s.textContent);
+            const keywords = Array.from(keywordsList.querySelectorAll("li span")).map(s => s.innerText);
             chrome.storage.local.set({ keywords }, () => {
                 console.log(`🗑️ Deleted keyword: ${value}`);
             });
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Save updated list
-        const keywords = Array.from(keywordsList.querySelectorAll("li span")).map(li => li.textContent);
+        const keywords = Array.from(keywordsList.querySelectorAll("li span")).map(li => li.innerText);
         chrome.storage.local.set({ keywords }, () => {
             console.log(`💾 Added keyword: ${value}`);
         });

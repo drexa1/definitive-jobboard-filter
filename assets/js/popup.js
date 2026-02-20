@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     const toggleButtons = [
-        { toggleId: "linkedinDaysAgoToggle", componentId: "linkedinDaysAgoDropdown" },
+        { toggleId: "linkedinApplicantsToggle", componentId: "linkedinApplicantsDropdown" },
         { toggleId: "linkedinCompaniesToggle", componentId: "linkedinCompaniesBtn" },
         { toggleId: "linkedinKeywordsToggle", componentId: "linkedinKeywordsBtn" },
 

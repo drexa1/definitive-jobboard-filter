@@ -13,6 +13,7 @@
         <script defer src="assets/js/companies.js"></script>
         <script defer src="assets/js/keywords.js"></script>
         <script defer src="assets/js/daysago.js"></script>
+        <script defer src="assets/js/applicants.js"></script>
         <link rel="stylesheet" href="assets/styles/popup.css">
     </head>
     <body>
@@ -42,35 +43,22 @@
                                             </div>
                                             <label for="linkedinApplicantsDropdown"></label>
                                             <select id="linkedinApplicantsDropdown" class="applicants-dropdown" disabled>
-                                                <option value="week">&gt;10</option>
-                                                <option value="month" selected>&gt;50</option>
+                                                <option value="10">&gt;10</option>
+                                                <option value="50" selected>&gt;50</option>
                                             </select>
-                                        </div>
-
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <div class="form-check form-switch mb-0">
-                                                <input class="form-check-input" type="checkbox" id="linkedinDaysAgoToggle">
-                                                <label class="form-check-label ms-2" for="linkedinDaysAgoToggle">Recent as</label>
-                                            </div>
-                                            <label for="linkedinDaysAgoDropdown"></label>
-                                            <select id="linkedinDaysAgoDropdown" class="days-ago-dropdown" disabled>
-                                                <option value="today">Last 24h</option>
-                                                <option value="week" selected>1 week</option>
-                                                <option value="month">1 month</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <div class="form-check form-switch mb-0">
-                                                <input class="form-check-input" type="checkbox" id="linkedinPromotedToggle">
-                                                <label class="form-check-label ms-2" for="linkedinPromotedToggle">Hide promoted</label>
-                                            </div>
                                         </div>
 
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <div class="form-check form-switch mb-0">
                                                 <input class="form-check-input" type="checkbox" id="linkedinDismissedToggle">
                                                 <label class="form-check-label ms-2" for="linkedinDismissedToggle">Hide dismissed</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" id="linkedinPromotedToggle">
+                                                <label class="form-check-label ms-2" for="linkedinPromotedToggle">Hide promoted</label>
                                             </div>
                                         </div>
 

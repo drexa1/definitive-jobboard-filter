@@ -12,13 +12,13 @@ class JobgetherFilter extends JobFilter {
             const companyName = heading?.querySelector("p a")?.innerText.trim();
             // Position
             const titleLink = heading?.querySelector('a[title]');
-            const positionTitle = titleLink?.textContent.trim();
+            const positionTitle = titleLink?.innerText.trim();
             // Skills
             const remoteRow = heading?.parentElement?.nextElementSibling;
             const skillLinks = remoteRow?.nextElementSibling?.querySelectorAll("a");
-            const skills = Array.from(skillLinks || []).map(skill => skill.textContent.trim());
+            const skills = Array.from(skillLinks || []).map(skill => skill.innerText.trim());
             // Days ago
-            const daysAgo = titleLink?.nextElementSibling?.textContent;
+            const daysAgo = titleLink?.nextElementSibling?.innerText;
             const numDaysAgo = daysAgo?.match(/\d+/) ? Number(daysAgo?.match(/\d+/)[0]) : 0;
             return {
                 card,

@@ -161,10 +161,10 @@ class JobFilter {
 
     // Add hide button (same as your current addHideBtn)
     addHideBtn(card, companyLink, companyName) {
+        if (!card || !companyLink || !companyName) return;
+
         // No need to redraw the button if the position already has the hide button rendered
-        if (this.hideButtons.has(card)) {
-            return
-        }
+        if (this.hideButtons.has(card)) return;
 
         companyLink.style.display = "inline-flex";
         const btn = document.createElement("button");

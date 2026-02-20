@@ -1,23 +1,12 @@
 /* global chrome */
 
 const daysAgoDropdowns = [
-    { toggleId: "linkedinDaysAgoToggle", dropdownId: "linkedinDaysAgoDropdown" },
     { toggleId: "jobgetherDaysAgoToggle", dropdownId: "jobgetherDaysAgoDropdown" },
     { toggleId: "justjoinDaysAgoToggle", dropdownId: "justjoinDaysAgoDropdown" },
     { toggleId: "web3careerDaysAgoToggle", dropdownId: "web3careerDaysAgoDropdown" }
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
-
-    // Load previously saved days ago values
-    function restoreDaysAgoDropdown(dropdownId) {
-        chrome.storage.local.get("daysago", data => {
-            const value = data.daysago?.[dropdownId];
-            if (!value) return;
-            const dropdown = document.getElementById(dropdownId);
-            dropdown.value = value;
-        });
-    }
 
     // Save days ago values
     function saveDaysAgoDropdown(dropdownId) {
@@ -26,6 +15,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             const daysAgoData = data.daysago || {};
             daysAgoData[dropdownId] = dropdown.value;
             chrome.storage.local.set({ daysago: daysAgoData });
+        });
+    }
+
+    // Load previously saved days ago values
+    function restoreDaysAgoDropdown(dropdownId) {
+        chrome.storage.local.get("daysago", data => {
+            const value = data.daysago?.[dropdownId];
+            if (!value) return;
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.value = value;
         });
     }
 

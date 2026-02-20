@@ -14,6 +14,21 @@ class Web3careerFilter extends JobFilter {
         await this.fetchRemote();
     }
 
+    handleStorageChanges(changes) {
+        super.handleStorageChanges(changes);
+
+        const keysOfInterest = [`${this.jobBoardName}USAToggle`, `${this.jobBoardName}RemoteToggle`];
+        const relevantChanges = Object.keys(changes).some(key => keysOfInterest.includes(key));
+        if (!relevantChanges) return;
+
+        const locationToggleKey = `${this.jobBoardName}USAToggle`;
+        if (changes[locationToggleKey]) this.usaFilterEnabled = !!changes[locationToggleKey].newValue;
+
+        const remoteToggleKey = `${this.jobBoardName}RemoteToggle`;
+        if (changes[remoteToggleKey]) this.remoteFilterEnabled = !!changes[remoteToggleKey].newValue;
+        this.hideJobs();
+    }
+
     async fetchLocation() {
         try {
             chrome.storage.local.get(`${this.jobBoardName}USAToggle`, async (result) => {
@@ -48,9 +63,9 @@ class Web3careerFilter extends JobFilter {
             const positionTitle = titleLink?.[0]?.innerText.trim();
             // Skills
             const skillsLink = card.querySelector(":scope > td:last-of-type > div")?.children;
-            const skills = Array.from(skillsLink).map(skill => skill.textContent.trim());
+            const skills = Array.from(skillsLink).map(skill => skill.innerText.trim());
             // Days ago
-            const daysago = card.querySelector(":scope > td:nth-of-type(3) > time")?.textContent;
+            const daysago = card.querySelector(":scope > td:nth-of-type(3) > time")?.innerText;
             const match = daysago?.match(/(\d+)([dh])/);
             const numDaysAgo = match && match[2] === "d" ? Number(match[1]) : 0;
             // Location
@@ -71,21 +86,6 @@ class Web3careerFilter extends JobFilter {
                 companyLink
             };
         });
-    }
-
-    handleStorageChanges(changes) {
-        super.handleStorageChanges(changes);
-
-        const keysOfInterest = [`${this.jobBoardName}USAToggle`, `${this.jobBoardName}RemoteToggle`];
-        const relevantChanges = Object.keys(changes).some(key => keysOfInterest.includes(key));
-        if (!relevantChanges) return;
-
-        const locationToggleKey = `${this.jobBoardName}USAToggle`;
-        if (changes[locationToggleKey]) this.usaFilterEnabled = !!changes[locationToggleKey].newValue;
-
-        const remoteToggleKey = `${this.jobBoardName}RemoteToggle`;
-        if (changes[remoteToggleKey]) this.remoteFilterEnabled = !!changes[remoteToggleKey].newValue;
-        this.hideJobs();
     }
 
     shouldHide({ companyName, positionTitle, skills, daysAgo, location, descriptionTitle, jobDescription }) {

@@ -13,12 +13,12 @@ class JustjoinFilter extends JobFilter {
             const companyName = companyLink.querySelector("p")?.innerText.trim();
             // Position
             const titleLink = firstRow.querySelectorAll(":scope > div > div > h3");
-            const positionTitle = titleLink?.[0]?.textContent.trim();
+            const positionTitle = titleLink?.[0]?.innerText.trim();
             // Skills
             const skillsLink = secondRow?.querySelector(":scope > div:nth-of-type(2)");
-            const skills = Array.from(skillsLink.children).slice(2).map(skill => skill.textContent.trim())
+            const skills = Array.from(skillsLink.children).slice(2).map(skill => skill.innerText.trim())
             // Days ago
-            const daysAgo = secondRow?.querySelector(":scope > div:nth-of-type(2) > div")?.textContent;
+            const daysAgo = secondRow?.querySelector(":scope > div:nth-of-type(2) > div")?.innerText;
             const numDaysAgo = daysAgo?.match(/\d+/) ? Number(daysAgo?.match(/\d+/)[0]) : 0;
             return {
                 card,
