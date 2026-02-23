@@ -23,7 +23,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["*://www.linkedin.com/jobs/search*"],
+      "matches": ["*://www.linkedin.com/jobs/search*", "*://www.linkedin.com/jobs/collections*"],
       "js": ["assets/js/jobfilter.js", "assets/js/jobboards/linkedin.js"],
       "run_at": "document_idle"
     },
@@ -38,9 +38,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": [
-        "*://web3.career/*"
-      ],
+      "matches": ["*://web3.career/*"],
       "js": ["assets/js/jobfilter.js", "assets/js/jobboards/web3career.js"],
       "run_at": "document_idle"
     }
