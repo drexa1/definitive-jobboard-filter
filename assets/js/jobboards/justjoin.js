@@ -42,7 +42,7 @@ const justjoinFilter = new JustjoinFilter("justjoin", "beforebegin");
 
 // Observe DOM changes for dynamically loaded jobs
 const observer = new MutationObserver(() => {
-    chrome.runtime.sendMessage({ jobboard: justjoinFilter.jobBoardName });
-    justjoinFilter.hideJobs();
+    chrome.runtime.sendMessage({jobboard: justjoinFilter.jobBoardName});
+    void justjoinFilter.hideJobs();
 });
 observer.observe(document.body, { childList: true, subtree: true });

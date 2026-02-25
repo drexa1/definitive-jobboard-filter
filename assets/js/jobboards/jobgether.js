@@ -33,7 +33,7 @@ const jobgetherFilter = new JobgetherFilter("jobgether", "afterend");
 
 // Observe DOM changes for dynamically loaded jobs
 const observer = new MutationObserver(() => {
-    chrome.runtime.sendMessage({ jobboard: jobgetherFilter.jobBoardName });
+    chrome.runtime.sendMessage({jobboard: jobgetherFilter.jobBoardName});
     jobgetherFilter.hideJobs();
 });
 observer.observe(document.body, { childList: true, subtree: true });

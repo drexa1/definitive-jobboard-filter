@@ -31,7 +31,7 @@ class JobFilter {
         this.hideButtons = new Set();
 
         // Attach storage listener to storage changes
-        chrome.storage.onChanged.addListener(changes => this.handleStorageChanges(changes));
+        chrome.storage.onChanged.addListener(async changes => await this.handleStorageChanges(changes));
         void this.initialize();
     }
 
@@ -40,7 +40,7 @@ class JobFilter {
         await this.fetchDaysAgo();
         await this.fetchCompaniesFilter();
         await this.fetchKeywordsFilter();
-        this.hideJobs();
+        await this.hideJobs();
     }
 
     handleStorageChanges(changes) {
@@ -64,18 +64,15 @@ class JobFilter {
         if (changes[keywordsToggleKey]) this.keywordsToggleEnabled = !!changes[keywordsToggleKey].newValue;
         if (changes.keywords) this.keywordsFilter = changes.keywords.newValue || [];
 
-        this.hideJobs();
+        void this.hideJobs();
     }
 
     // Fetch days-ago filter from storage
     async fetchDaysAgo() {
         try {
-            chrome.storage.local.get(`${this.jobBoardName}DaysAgoToggle`, async (result) => {
-                if (result) {
-                    const { daysago = [] } = await chrome.storage.local.get("daysago"); // this is an array of jobboards
-                    this.daysAgoFilter = daysago[`${this.jobBoardName}DaysAgoDropdown`];
-                }
-            });
+            const result = await chrome.storage.local.get([`${this.jobBoardName}DaysAgoToggle`, "daysago"]);
+            this.daysAgoFilterEnabled = !!result[`${this.jobBoardName}DaysAgoToggle`];
+            this.daysAgoFilter = result.daysago?.[`${this.jobBoardName}DaysAgoDropdown`] || null;
         } catch (error) {
             console.warn("Storage access failed:", error);
         }
@@ -84,12 +81,9 @@ class JobFilter {
     // Fetch companies blacklist from storage
     async fetchCompaniesFilter() {
         try {
-            chrome.storage.local.get(`${this.jobBoardName}CompaniesToggle`, async (result) => {
-                this.companiesToggleEnabled = !!result[`${this.jobBoardName}CompaniesToggle`];
-            });
-            const { companies = [] } = await chrome.storage.local.get("companies");
-            this.hideButtons = new Set(companies);
-            this.companiesFilter = companies;
+            const result = await chrome.storage.local.get([`${this.jobBoardName}CompaniesToggle`, "companies"]);
+            this.companiesToggleEnabled = !!result[`${this.jobBoardName}CompaniesToggle`];
+            this.companiesFilter = result.companies || [];
         } catch (error) {
             console.warn("Storage access failed:", error);
         }
@@ -98,17 +92,19 @@ class JobFilter {
     // Fetch keywords blacklist from storage
     async fetchKeywordsFilter() {
         try {
-            chrome.storage.local.get(`${this.jobBoardName}KeywordsToggle`, async (result) => {
-                this.companiesToggleEnabled = !!result[`${this.jobBoardName}KeywordsToggle`];
-            });
-            const { keywords = [] } = await chrome.storage.local.get("keywords");
-            this.keywordsFilter = keywords;
+            const result = await chrome.storage.local.get([`${this.jobBoardName}KeywordsToggle`, "keywords"]);
+            this.keywordsToggleEnabled = !!result[`${this.jobBoardName}KeywordsToggle`];
+            this.keywordsFilter = result.keywords || [];
         } catch (error) {
             console.warn("Storage access failed:", error);
         }
     }
 
-    hideJobs() {
+    async hideJobs() {
+        // await this.fetchCompaniesFilter();
+        // await this.fetchKeywordsFilter();
+        // await this.fetchDaysAgo();
+
         this.getJobCards().forEach((jobCard) => {
             if (!jobCard) return;
 

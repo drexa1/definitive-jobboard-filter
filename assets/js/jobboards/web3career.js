@@ -26,7 +26,8 @@ class Web3careerFilter extends JobFilter {
 
         const remoteToggleKey = `${this.jobBoardName}RemoteToggle`;
         if (changes[remoteToggleKey]) this.remoteFilterEnabled = !!changes[remoteToggleKey].newValue;
-        this.hideJobs();
+
+        void this.hideJobs();
     }
 
     async fetchLocation() {
@@ -108,6 +109,6 @@ const web3careerFilter = new Web3careerFilter("web3career", "afterend");
 // Observe DOM changes for dynamically loaded jobs
 const observer = new MutationObserver(() => {
     chrome.runtime.sendMessage({ jobboard: web3careerFilter.jobBoardName });
-    web3careerFilter.hideJobs();
+    void web3careerFilter.hideJobs();
 });
 observer.observe(document.body, { childList: true, subtree: true });

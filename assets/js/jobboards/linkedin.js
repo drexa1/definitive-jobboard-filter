@@ -31,7 +31,8 @@ class LinkedinFilter extends JobFilter {
 
         const promotedToggleKey = `${this.jobBoardName}PromotedToggle`;
         if (changes[promotedToggleKey]) this.promotedFilterEnabled = !!changes[promotedToggleKey].newValue;
-        this.hideJobs();
+
+        void this.hideJobs();
     }
 
     async fetchApplicants() {
@@ -106,7 +107,7 @@ const linkedinFilter = new LinkedinFilter("linkedin", "afterend");
 
 // Observe DOM changes for dynamically loaded jobs
 const observer = new MutationObserver(() => {
-    chrome.runtime.sendMessage({ jobboard: linkedinFilter.jobBoardName });
-    linkedinFilter.hideJobs();
+    chrome.runtime.sendMessage({jobboard: linkedinFilter.jobBoardName});
+    void linkedinFilter.hideJobs();
 });
 observer.observe(document.body, { childList: true, subtree: true });
