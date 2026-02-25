@@ -19,7 +19,7 @@ class JobgetherFilter extends JobFilter {
             const skills = Array.from(skillLinks || []).map(skill => skill.innerText.trim());
             // Days ago
             const daysAgo = titleLink?.nextElementSibling?.innerText;
-            const numDaysAgo = daysAgo?.match(/\d+/) ? Number(daysAgo?.match(/\d+/)[0]) : 0;
+            let numDaysAgo = daysAgo?.match(/\d+/) ? Number(daysAgo?.match(/\d+/)[0]) : 0;
             return {
                 card,
                 jobData: { companyName, positionTitle, skills, daysAgo: numDaysAgo },

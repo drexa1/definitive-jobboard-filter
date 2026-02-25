@@ -152,9 +152,9 @@ class JobFilter {
 
     isOld(jobDays) {
         switch (this.daysAgoFilter) {
-            case "today": return jobDays > 0;  // grab only the ones posted "today"
-            case "week":  return jobDays > 7;  // grab posted no more than 7 days
-            case "month": return jobDays > 30; // grab all
+            case "today": return jobDays > 0;   // grab only the ones posted "today"
+            case "week":  return jobDays > 7;   // grab posted no more than 7 days
+            case "month": return jobDays >= 30; // grab all
             default: return false;
         }
     }
