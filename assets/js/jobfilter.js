@@ -31,7 +31,7 @@ class JobFilter {
         this.hideButtons = new Set();
 
         // Attach storage listener to storage changes
-        chrome.storage.onChanged.addListener(async changes => await this.handleStorageChanges(changes));
+        chrome.storage.onChanged.addListener(async changes => this.handleStorageChanges(changes));
         void this.initialize();
     }
 
